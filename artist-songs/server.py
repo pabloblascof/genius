@@ -51,8 +51,6 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         return song_list
 
-    def html_builder (self, song_list):
-
         with open("songs.html", "w"):
             self.wfile.write(bytes('<html><head><h1>Songs</h1><body style="background-color: blue" >',"utf8"))
 
@@ -65,6 +63,11 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
 
+        def send_file(file): # call to enter a filename to be opened
+            with open(file) as f:
+                message = f.read()
+            self.wfile.write(bytes(message, "utf8"))
+
         status_code = 200
 
         path = self.path
@@ -76,26 +79,23 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         elif 'searchSongs' in path:
 
-            singer = path.split("=")[1]
-            limit = path.split("=")[2]
-            search_ingredient(active_ingredient, limit)
-            file = 'info.html'
-            send_file(file)
-
-
             singer= self.path.split("=")[1]
             song_list = self.get_songs(singer)
             if song_list:
                 http_response = self.html_builder(song_list)
             else:
-                http_response = "<h1>No songs found for %s</h1>" % artist_name
+                http_response = "<h1>No songs found for %s</h1>" % singer
+
+            send_file('list.html')
+            self.wfile.write(bytes(http_response, "utf8"))
+            return
 
 
         else:
             http_response_code = 404
 
         # Send response status code
-        self.send_response(http_response_code)
+        self.send_response(status_code)
 
         # Send extra headers headers
 
