@@ -42,10 +42,8 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         if not id:
             return song_list
-        page = 1
-        per_page = 50
 
-        page = "/artists/%s/songs?per_page=%i&page=%i" % (id, per_page, page)
+        page = "/artists/%s/songs?per_page=25&page=1" % (id)
 
         songs_res = self.send_query(page)
 
