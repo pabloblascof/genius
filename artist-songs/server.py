@@ -83,8 +83,10 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             if song_list:
                 message = self.html_builder(song_list)
                 self.wfile.write(bytes(message, "utf8"))
+                
             else:
-                message = "<h1>No songs found for %s</h1>" % singer
+                with open("not_found.html") as f:
+                    message = f.read()
                 self.wfile.write(bytes(message, "utf8"))
 
         elif 'searchSongs' in self.path:
