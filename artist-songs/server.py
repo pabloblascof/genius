@@ -53,10 +53,10 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
     def html_builder (self, song_list):
 
-        html = '<html><head>"<meta charset=\"UTF-8\">" <h1>Songs</h1></head><body style="background-color: white" >'
+        html = '<html><head>"<meta charset=\"UTF-8\">"</head><body><h1>Songs</h1>'
         for song in song_list:
             html += "<li style='height:50px'>"
-            if song['header_image_thumbnail_url'].find('default cover') != -1:
+            if song['header_image_thumbnail_url'].find('default cover'):
                 html += "<img align='left' height='50' width='50' src='" + song['header_image_thumbnail_url'] + "'>"
             html += "<a href='" + song['url'] + "'>" + "<h4>" + song['title'] + "</h4>" + "</li>"
 
@@ -67,7 +67,9 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
     # GET
     def do_GET(self):
 
-        http_response_code = 200
+        self.send_response(200)
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
 
         path = self.path
 
@@ -82,35 +84,10 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             song_list = self.get_songs(singer)
             if song_list:
                 message = self.html_builder(song_list)
-                self.wfile.write(bytes(message, "utf8"))
-
             else:
                 with open("not_found.html") as f:
                     message = f.read()
-                self.wfile.write(bytes(message, "utf8"))
-
-        elif 'searchSongs' in self.path:
-            param = self.path.split("?")[1]
-            artist_name = param.split("=")[1]
-            song_list = self.get_songs(artist_name)
-            if song_list:
-                http_response = self.html_builder(song_list)
-            else:
-                http_response = "<h1>No songs found for %s</h1>" % artist_name
-        else:
-            http_response_code = 404
-
-        # Send response status code
-        self.send_response(http_response_code)
-
-        # Send extra headers headers
-
-        # Send the normal headers
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-
-        # Write content as utf-8 data
-        self.wfile.write(bytes(http_response, "utf8"))
+            self.wfile.write(bytes(message, "utf8"))
         return
 
 
