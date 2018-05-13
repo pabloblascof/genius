@@ -53,11 +53,13 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
     def html_builder (self, song_list):
 
-        html = '<html><head>"<meta charset=\"UTF-8\">"</head><body><h1>Songs</h1>'
+        html = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs</h1>'
         for song in song_list:
             html += "<li style='height:50px'>"
             if song['header_image_thumbnail_url'].find('default cover'):
                 html += "<img align='left' height='50' width='50' src='" + song['header_image_thumbnail_url'] + "'>"
+            else:
+                html += '(Album photo not found)'
             html += "<a href='" + song['url'] + "'>" + "<h4>" + song['title'] + "</h4>" + "</li>"
 
         html += "</body></html>"
