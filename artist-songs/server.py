@@ -37,7 +37,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         for item in res_json['response']['hits']:
             id = item['result']['primary_artist']['id']
-            print('ID:'id)
+            print('ID:',id)
             break
 
         if not id:
@@ -53,10 +53,16 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         return song_list
 
+    def html_builder (self, song_list):
 
+        with open("songs.html", "w"):
+            self.wfile.write(bytes('<html><head><h1>Songs</h1><body style="background-color: blue" >',"utf8"))
 
-
-
+            for song in song_list:
+                if 'default_cover' not in song['header_image_thumbnail_url']:
+                    self.wfile.write(bytes("<li><img align='left' height='50' width='50' src='" + song['header_image_thumbnail_url'] + "'>"
+                                           + "<a href='" + song['url'] + "'>" + "<h4>" + song['title'] + "</h4>" + "</li>"))
+            self.wfile.write(bytes("</head></html>"))
 
     # GET
     def do_GET(self):
@@ -82,7 +88,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             singer= self.path.split("=")[1]
             song_list = self.get_songs(singer)
             if song_list:
-                http_response = self.songs2html(song_list)
+                http_response = self.html_builder(song_list)
             else:
                 http_response = "<h1>No songs found for %s</h1>" % artist_name
 
