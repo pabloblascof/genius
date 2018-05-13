@@ -1,10 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    def do_GET(self):
 
-</body>
-</html>
+        status_code = 200
+
+        path = self.path
+
+        if self.path == "/":
+            with open("artist.html") as f:
+                message = f.read()
+            self.wfile.write(bytes(message, "utf8"))
+
+        elif 'searchSongs' in path:
+
+            singer= self.path.split("=")[1]
+            song_list = self.get_songs(singer)
+            if song_list:
+                http_response = self.html_builder(song_list)
+            else:
+                http_response = "<h1>No songs found for %s</h1>" % singer
+
+            send_file('list.html')
+
+
+        else:
+            http_response_code = 404
+
+        # Send response status code
+        self.send_response(status_code)
+
+        # Send extra headers headers
+
+        # Send the normal headers
+        self.send_header('Content-type', 'text/html')
+        self.end_headers()
+
+        self.wfile.write(bytes(http_response, "utf8"))
+        return
+
+
+GeniusHandler.api_token = sys.argv[1]
+
+httpd = socketserver.TCPServer(("", PORT), GeniusHandler)
+print("serving at port", PORT)
+httpd.serve_forever()
