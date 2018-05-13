@@ -83,7 +83,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             if song_list:
                 message = self.html_builder(song_list)
                 self.wfile.write(bytes(message, "utf8"))
-                
+
             else:
                 with open("not_found.html") as f:
                     message = f.read()
