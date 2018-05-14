@@ -97,4 +97,10 @@ GeniusHandler.api_token = sys.argv[1]
 
 httpd = socketserver.TCPServer(("", PORT), GeniusHandler)
 print("serving at port", PORT)
-httpd.serve_forever()
+try:
+    httpd.serve_forever()
+except KeyboardInterrupt:
+    pass
+httpd.server_close()
+print("")
+print("Server stopped!")
