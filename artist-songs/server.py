@@ -55,12 +55,12 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
         html = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs</h1>'
         for song in song_list:
-            html += "<li style='height:50px'>"
+            html += "<li>"
             if song['header_image_thumbnail_url'].find('default cover'):
-                html += "<img align='left' height='50' width='50' src='" + song['header_image_thumbnail_url'] + "'>"
+                html += "<img align='left' height='50' width='50' src=' " + song['header_image_thumbnail_url'] + "'>"
             else:
                 html += '(Album photo not found)'
-            html += "<a href='" + song['url'] + "'>" + "<h4>" + song['title'] + "</h4>" + "</li>"
+            html += "<a href='" + song['url'] + "'>" + "<h2>" + song['title'] + "</h2></a></li>"
 
         html += "</body></html>"
 
