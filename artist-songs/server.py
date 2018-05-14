@@ -50,18 +50,19 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
     def html_builder (self, song_list):
 
-        html = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs found of the requested singer</h1>'
+        html_file = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs found of the requested singer</h1>'
         for song in song_list:
-            html += "<li>"
+            html_file += "<li>"
             if song['header_image_thumbnail_url'].find('default cover'):
-                html += "<img align='left' height='50' width='50' src=' " + song['header_image_thumbnail_url'] + "'>"
+                html_file += "<img align='left' height='50' width='50' src=' " + song['header_image_thumbnail_url'] + "'>"
             else:
-                html += '(Album photo not found)'
-            html += "<a href='" + song['url'] + "'>" + "<h2>" + song['title'] + "</h2></a></li>"
+                html_file += '(Album photo not found)'
+                
+            html_file += "<a href='" + song['url'] + "'>" + "<h2>" + song['title'] + "</h2></a></li>"
 
-        html += "</body></html>"
+        html_file += "</body></html>"
 
-        return html
+        return html_file
 
     # GET
     def do_GET(self):
