@@ -50,7 +50,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
 
     def html_builder (self, song_list):
 
-        html = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body> <h1>' + 'Songs found of' + singer + '</h1>'
+        html = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs found of the requested singer</h1>'
         for song in song_list:
             html += "<li>"
             if song['header_image_thumbnail_url'].find('default cover'):
