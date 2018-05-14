@@ -94,6 +94,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
         return
 
 
+
 GeniusHandler.api_token = sys.argv[1]
 
 httpd = socketserver.TCPServer(("", PORT), GeniusHandler)
