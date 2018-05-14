@@ -40,9 +40,6 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             print('ID:',id)
             break
 
-        if not id:
-            return song_list
-
         page = "/artists/%s/songs?per_page=25&page=1" % (id)
 
         songs_res = self.send_query(page)
@@ -92,7 +89,6 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             self.wfile.write(bytes(message, "utf8"))
             self.send_response(404)
         return
-
 
 
 GeniusHandler.api_token = sys.argv[1]
