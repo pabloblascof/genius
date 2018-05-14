@@ -90,6 +90,7 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
                 with open("not_found.html") as f:
                     message = f.read()
             self.wfile.write(bytes(message, "utf8"))
+            self.send_response(404)
         return
 
 

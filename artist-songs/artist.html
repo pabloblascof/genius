@@ -1,44 +1,18 @@
-<html>
-
+<!DOCTYPE html>
+<html lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
-	<title>Find Artist Songs using Genius API</title>
-	<style>
-		input {
-			padding: 12px 20px;
-			margin: 8px 0;
-		}
-
-		div {
-			padding: 30px 20px;
-			width: 50%
-		}
-
-		input[type=button],
-		input[type=submit],
-		input[type=reset] {
-			background-color: #4CAF50;
-			border: none;
-			color: white;
-			padding: 16px 32px;
-			text-decoration: none;
-			margin: 4px 2px;
-			cursor: pointer;
-			border-radius: 10px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>Genius Search</title>
 </head>
+<body style="background-color:#ffff64;">
 
-<body>
-	<h1>Genius Client</h1>
-	<div id='songs'>
-		<form method="get" action="searchSongs">
-			Artist name<input type="text" name="artist">
-			<input type="submit" value="Songs Search: Send to Genius">
-		</form>
-	</div>
+    <h1>Genius Search Application by Artist</h1>
 
-
+<form action="searchSong">
+    Artist name<input type="text" name="artist">
+    <input type="submit">
+</form>
 </body>
+<img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Genius-logo.png" alt="genius_logo">
 
 </html>
