@@ -34,32 +34,44 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
         song_list = []
         page = "/search?q=" + singer
         res_json = self.send_query(page)
+        try:
+            for i in res_json['response']['hits']:
+                id = i['result']['primary_artist']['id']
+                print('ID:',id)
+                break
+        except KeyError:
+            with open("not_found.html") as f:
+                message = f.read()
+            self.wfile.write(bytes(message, "utf8"))
 
-        for item in res_json['response']['hits']:
-            id = item['result']['primary_artist']['id']
-            print('ID:',id)
-            break
-
-        page = "/artists/%s/songs?per_page=25&page=1" % (id)
+        page = "/artists/%s/songs?per_page=30&page=1" % (id)
 
         songs_res = self.send_query(page)
 
-        song_list = songs_res['response']['songs']
+        try:
+            song_list = songs_res['response']['songs']
+        except KeyError:
+            with open("not_found.html") as f:
+                message = f.read()
+            self.wfile.write(bytes(message, "utf8"))
+
 
         return song_list
 
     def html_builder (self, song_list):
 
-        html_file = '<html lang="en"><head><meta charset=\"UTF-8\"></head><body><h1>Songs found of the requested singer</h1>'
+        html_file = "<body style='background-color:#ffff64;'>"
+        html_file += "<font face = ""Arial"">"
+        html_file += "<a href=""http://localhost:8000/"">Back to Main Page</a></p>"
+        html_file += '</head><body><h1>Songs found of the requested singer/band</h1>'
         for song in song_list:
             html_file += "<li>"
             if song['header_image_thumbnail_url'].find('default cover'):
                 html_file += "<img align='left' height='50' width='50' src=' " + song['header_image_thumbnail_url'] + "'>"
             else:
                 html_file += '(Album photo not found)'
-                
-            html_file += "<a href='" + song['url'] + "'>" + "<h2>" + song['title'] + "</h2></a></li>"
 
+            html_file += "<a href='" + song['url'] + "'>" + "<h2>" + song['title'] + "</h2></a></li>"
         html_file += "</body></html>"
 
         return html_file
@@ -84,11 +96,11 @@ class GeniusHandler(http.server.BaseHTTPRequestHandler):
             song_list = self.get_songs(singer)
             if song_list:
                 message = self.html_builder(song_list)
-            else:
-                with open("not_found.html") as f:
-                    message = f.read()
-            self.wfile.write(bytes(message, "utf8"))
-            self.send_response(404)
+        else:
+            with open("not_found.html") as f:
+                message = f.read()
+        self.wfile.write(bytes(message, "utf8"))
+        self.send_response(404)
         return
 
 
